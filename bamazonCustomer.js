@@ -1,4 +1,3 @@
-const inquirer = require(`inquirer`);
 const mysql2 = require(`mysql2/promise`);
 const helper = require(`./bcHelpers`);
 
@@ -12,23 +11,17 @@ const bamazon = async () => {
   });
 
   try {
+    // getItemRes
+    // hashmap to contain all item_ids and quantities
     const getItemRes = await helper.getAllItems(database); 
-    const productRes = await inquirer.prompt({
-			name: `product`,
-			type: `number`,
-			message: `What product ID would you like to buy?`
-		});
 
-		const quantityRes = await inquirer.prompt({
-			name: `quantity`,
-			type: `number`,
-			message: `Quantity you would like to buy?`
-    });
-
-    console.log(`You want to buy item id ${productRes.product}`);
-    console.log(`You want to buy quantity: ${quantityRes.quantity}`);
-
-	} catch (error) {
+    // inquirer prompt to get what item_id the user wants and the quantity
+    const itemQuantityRes = await helper.itemAndQuantity(getItemRes);
+    // console.log(itemQuantityRes);
+    // queries the database with the user input
+    await helper.buyItem(database, itemQuantityRes.quantity, itemQuantityRes.item_id);
+    return bamazon();
+  } catch (error) {
 		console.log(error);
 	}
 };
