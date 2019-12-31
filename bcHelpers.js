@@ -34,6 +34,8 @@ const mockData = [
 // };
 
 const getAllItems = async (db) => {
+  // create a hashmap to store item ids and quantities
+  let hashMap = {};
   try {
     // result from the database query
     const res = await db.query(`SELECT * FROM products`);
@@ -49,29 +51,13 @@ const getAllItems = async (db) => {
       console.log(`Price: $${rows[i].price}`);
       console.log(`Quantity Available: ${rows[i].stock_quantity}`);
       console.log(`---------------------------------------`);
+      // push the id as the key and the quantity as the value
+      hashMap[rows[i].item_id] = rows[i].stock_quantity;
     }
+    // return the hashmap
+    return hashMap;
   } catch (err) {
     console.log(err);
-  }
-};
-
-const customerInquiry = async (itemRes) => {
-	const productRes = await inquirer.prompt({
-		name: `product`,
-		type: `number`,
-		message: `What product ID would you like to buy?`
-	});
-
-	const quantityRes = await inquirer.prompt({
-		name: `quantity`,
-		type: `number`,
-		message: `Quantity you would like to buy?`
-  });
-
-  for(let i = 0; i < itemRes.length; i++) {
-    if(itemRes[i].product_id == productRes.product) {
-      console.log(itemRes[i]);
-    }
   }
 };
 

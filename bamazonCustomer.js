@@ -12,7 +12,7 @@ const bamazon = async () => {
   });
 
   try {
-    await helper.getAllItems(database); 
+    const getItemRes = await helper.getAllItems(database); 
     const productRes = await inquirer.prompt({
 			name: `product`,
 			type: `number`,
@@ -23,7 +23,11 @@ const bamazon = async () => {
 			name: `quantity`,
 			type: `number`,
 			message: `Quantity you would like to buy?`
-		});
+    });
+
+    console.log(`You want to buy item id ${productRes.product}`);
+    console.log(`You want to buy quantity: ${quantityRes.quantity}`);
+
 	} catch (error) {
 		console.log(error);
 	}
