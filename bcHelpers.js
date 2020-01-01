@@ -10,6 +10,8 @@ const mockData = [
 	[`Bundle of Oranges`, `food`, 9, 1100]
 ];
 
+// functions for debug purposes 
+// ---------------------------------------------------------------------
 // initializes the table if it doesn't exist
 const initialTableQuery = async db => {
 	const query = `CREATE TABLE IF NOT EXISTS products(
@@ -36,6 +38,7 @@ const populatTable = async db => {
 		console.log(err);
 	}
 };
+// ---------------------------------------------------------------------
 
 const getAllItems = async db => {
 	// create a hashmap to store item ids and quantities
