@@ -99,7 +99,9 @@ const itemAndQuantity = async getItemRes => {
 		customerRes.quantity > getItemRes[customerRes.item_id] ||
 		!(customerRes.quantity > 0)
 	) {
-		console.log(`Warehouse has insufficient quantity or you input an amount, 0 or less.`);
+		console.log(
+			`Warehouse has insufficient quantity or you input an amount, 0 or less.`
+		);
 		return itemAndQuantity(getItemRes);
 	}
 
@@ -118,9 +120,34 @@ const buyItem = async (db, q, id) => {
 	}
 };
 
+const showCost = async (db, q, id) => {
+	const query = `SELECT price FROM products WHERE item_id = ?`;
+	const data = id;
+	try {
+    const res = await db.query(query, data);
+    let price = res[0][0].price;
+    price *= q;
+    console.log(`Your total for this transaction is $${price}.`);
+
+    // inquirer prompt to buy another item
+    const repeat = await inquirer.prompt({
+      name: `confirmation`,
+      message: `Would you like to select another item?`,
+      type: `confirm`
+    });
+    if(!repeat.confirmation) {
+      process.exit();
+    }
+  } catch (err) {
+		console.log(err);
+  }
+
+};
+
 module.exports = {
 	getAllItems,
 	hashMapContains,
 	itemAndQuantity,
-	buyItem
+  buyItem,
+  showCost,
 };

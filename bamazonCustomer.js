@@ -20,6 +20,7 @@ const bamazon = async () => {
     // console.log(itemQuantityRes);
     // queries the database with the user input
     await helper.buyItem(database, itemQuantityRes.quantity, itemQuantityRes.item_id);
+    await helper.showCost(database, itemQuantityRes.quantity, itemQuantityRes.item_id);
     return bamazon();
   } catch (error) {
 		console.log(error);
